@@ -34,10 +34,10 @@ class UserPortfolio @Inject constructor(private val holdingsRepository: Holdings
                     }
                     is ApiResult.Error -> UIState.Failure(apiResult.message)
                     is ApiResult.Exception -> UIState.Failure(apiResult.e.localizedMessage ?: "An unexpected error occurred")
-                    ApiResult.Loading -> UIState.Loading // Assuming you want to propagate this
+                    ApiResult.Loading -> UIState.Loading
                 }
             }
-            .onStart { emit(UIState.Loading) } // A better way to signal start of the operation
+            .onStart { emit(UIState.Loading) }
             .catch { e ->
                 // Catch any unexpected exceptions from the flow itself
                 Log.e("UserPortfolio", "Flow collection error", e)

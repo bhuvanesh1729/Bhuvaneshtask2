@@ -19,7 +19,6 @@ class HoldingsRepository @Inject constructor(
     private val holdingDao: HoldingsDao,
 ) : IHoldingsRepository {
 
-    // This function follows a more robust "network-bound resource" or "Single Source of Truth" pattern.
     override suspend fun getHoldings(): Flow<ApiResult<HoldingsData>> {
         return flow {
             // 1. Emit cached data first.
