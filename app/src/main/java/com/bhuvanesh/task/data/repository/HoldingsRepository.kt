@@ -37,15 +37,8 @@ class HoldingsRepository @Inject constructor(
                     // The UI will get this new data from its DB observer.
                     remoteData.data.toDbEntity()?.let {
                         Log.d("TAG", "Saving remote data to DB")
-                        // It's often good practice to clear old data before inserting new data
-                        // to avoid conflicts, depending on the use case.
-                        // holdingDao.deleteAll()
                         holdingDao.insert(it)
                     }
-                    // We emit the fresh data from network as well to give immediate feedback.
-                    // In a pure SSOT, you might rely solely on the DB flow to update.
-                    // However, emitting here ensures the caller gets the latest data immediately
-                    // without waiting for the DB-flow to re-trigger.
                     emit(remoteData)
                 }
 
@@ -59,6 +52,6 @@ class HoldingsRepository @Inject constructor(
                 }
 
             }
-        } // 5. Use flowOn with Dispatchers.IO for all I/O operations.
+        }
     }
 }
