@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             BottomNavBar(
                                 viewModel.bottomBarItems.collectAsState().value,
                                 onItemClick = {
-                                    navController.navigate(it.toString())
+                                    navController.navigate(it)
                                 }
                             )
                         },

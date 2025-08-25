@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.bhuvanesh.task.data.uidata.BottomNavigationItem
@@ -25,18 +26,18 @@ import com.bhuvanesh.task.data.uidata.BottomNavigationItem
 @Composable
 fun BottomNavBar(
     items: List<BottomNavigationItem>,
-    onItemClick: (Int) -> Unit,
+    onItemClick: (String) -> Unit,
 ) {
     var selectedIndex by rememberSaveable {
-        mutableStateOf(1)
+        mutableStateOf(0)
     }
-    NavigationBar {
+    NavigationBar(containerColor = Color.LightGray) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = selectedIndex == index,
                 onClick = {
                     selectedIndex = index
-                    onItemClick(index)
+                    onItemClick(item.title)
                 },
                 label = { Text(text = item.title) },
                 icon = {

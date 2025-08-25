@@ -1,5 +1,11 @@
 package com.bhuvanesh.task.presentation.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -44,62 +50,73 @@ fun TotalInvestmentView(
     var isExpanded by remember {
         mutableStateOf(false)
     }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(NavigationBarDefaults.containerColor)
-            .padding(16.dp)
-            .clickable{
+            .clickable { // The entire column is clickable to toggle the state
                 isExpanded = !isExpanded
             }
+            .padding(16.dp)
     ) {
-        if (isExpanded) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    "Current value*",
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    "₹ ${aggregatedData.currentValue.toCurrency()}",
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
-                )
+        // AnimatedVisibility will handle the animation for its content.
+        AnimatedVisibility(
+            visible = isExpanded,
+            // Defines how the content animates in
+            enter = expandVertically(animationSpec = tween(300)) + fadeIn(animationSpec = tween(300)),
+            // Defines how the content animates out
+            exit = shrinkVertically(animationSpec = tween(300)) + fadeOut(animationSpec = tween(300))
+        ) {
+            // The content to be shown/hidden is placed inside a Column
+            Column {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(
+                        "Current value*",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        "₹ ${aggregatedData.currentValue.toCurrency()}",
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(
+                        "Total investment*",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        "₹ ${aggregatedData.totalInvestment.toCurrency()}",
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Black
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(
+                        "Today's Profit & Loss*",
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Text(
+                        (if (aggregatedData.todayPnL >= 0) "₹${aggregatedData.todayPnL.toCurrency()}" else "-₹${(-aggregatedData.todayPnL).toCurrency()}"),
+                        color = todayPnlColor,
+                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Divider(color = Color(0xFFE0E0E0), thickness = 1.dp)
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    "Total investment*",
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    "₹ ${aggregatedData.totalInvestment.toCurrency()}",
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Black
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(
-                    "Today's Profit & Loss*",
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Text(
-                    (if (aggregatedData.todayPnL >= 0) "₹${aggregatedData.todayPnL.toCurrency()}" else "-₹${(-aggregatedData.todayPnL).toCurrency()}"),
-                    color = todayPnlColor,
-                    fontWeight = FontWeight.Medium,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Divider(color = Color(0xFFE0E0E0), thickness = 1.dp)
         }
+        // This Row is always visible
         Row(
             Modifier
                 .fillMaxWidth()
-                .clickable { isExpanded = !isExpanded }
                 .padding(top = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -121,9 +138,10 @@ fun TotalInvestmentView(
                     color = pnlColor,
                     style = MaterialTheme.typography.bodySmall
                 )
+                // Icon state is toggled based on isExpanded for better UX
                 Icon(
-                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                    contentDescription = null,
+                    imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
                     tint = Color.Gray
                 )
             }

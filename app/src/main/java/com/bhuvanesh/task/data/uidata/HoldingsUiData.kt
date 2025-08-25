@@ -47,7 +47,7 @@ data class BottomNavigationItem(
         val tabs = listOf<BottomNavigationItem>(
             BottomNavigationItem(
                 "Portfolio",
-                Icons.Filled.List,
+                Icons.Outlined.List,
                 Icons.Outlined.List,
             )
         )
