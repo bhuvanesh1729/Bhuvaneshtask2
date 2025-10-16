@@ -6,5 +6,5 @@ import retrofit2.http.GET
 interface UserService {
 
     @GET("/")
-    fun getUserData(): Call<HoldingsData>
+    fun getUserData(): Call<Unit>
 }

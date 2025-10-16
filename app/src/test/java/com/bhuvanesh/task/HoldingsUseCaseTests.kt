@@ -2,14 +2,12 @@ import com.bhuvanesh.network.ApiResult
 import com.bhuvanesh.task.data.remote.Content
 import com.bhuvanesh.task.data.remote.Holdings
 import com.bhuvanesh.task.data.remote.HoldingsData
-import com.bhuvanesh.task.data.repository.HoldingsRepository
 import com.bhuvanesh.task.data.uidata.HoldingsUiData
 import com.bhuvanesh.task.data.uidata.TotalInvestmentUiData
 import com.bhuvanesh.task.data.uidata.UIData
 import com.bhuvanesh.task.data.uidata.UIState
 import com.bhuvanesh.task.data.uidata.calculateTotals
 import com.bhuvanesh.task.data.uidata.toHoldingsUiDataList
-import com.bhuvanesh.task.domain.usecases.UserPortfolio
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
